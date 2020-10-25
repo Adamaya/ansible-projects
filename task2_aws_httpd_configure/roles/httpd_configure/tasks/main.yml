@@ -1,0 +1,36 @@
+---
+# tasks file for httpd_configure
+- name: package installer for httpd
+  package:
+    name: "httpd"
+    state: "present"
+  register: httpd_package_status
+
+
+- name: Creating Document Root Directory
+  file:
+    state: directory
+    dest: "{{ Document_root }}"
+  register: root_dir_name
+
+
+- name: Configuration file for apache web server 
+  template:
+    dest: "/etc/httpd/conf.d/my_configuration.conf"
+    src: "templates/my_configuration.conf.j2"
+  when: httpd_package_status.rc == 0
+  notify: httpd service
+
+
+- name: Copy web page from url
+  copy:
+    dest: "{{ Document_root }}/index.html"
+    src: index.html
+  when: root_dir_name.failed == false
+
+
+- name: Start httpd service
+  service: 
+     name: httpd
+     state: started
+

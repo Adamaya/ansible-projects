@@ -1,0 +1,4 @@
+---
+# vars file for httpd_configure
+Document_root: /var/www/myWebDir
+newPort: 8099

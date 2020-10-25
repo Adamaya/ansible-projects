@@ -1,0 +1,39 @@
+- hosts: localhost
+  vars_files:
+          - key.yml
+  tasks:
+  - name: webserver instance provision
+    ec2:
+       key_name: "ansible_key"
+       aws_access_key: "{{ accesskey }}"
+       aws_secret_key: "{{ secretkey }}"
+       instance_type: "t2.micro"
+       image: "ami-052c08d70def0ac62"
+       wait: yes
+       instance_tags:
+               Name: webserver
+       count: 3
+       vpc_subnet_id: "subnet-bbf5cfd3"
+       assign_public_ip: yes
+       region: "ap-south-1"
+       state: present
+       group_id: "sg-0087163dff83e07ac"
+       
+  - name: load balancer instance provision
+    ec2:
+       key_name: "ansible_key"
+       aws_access_key: "{{ accesskey }}"
+       aws_secret_key: "{{ secretkey }}"
+       instance_type: "t2.micro"
+       image: "ami-052c08d70def0ac62"
+       wait: yes
+       instance_tags:
+               Name: loadbalancer       
+       count: 1
+       vpc_subnet_id: "subnet-bbf5cfd3"
+       assign_public_ip: yes
+       region: "ap-south-1"
+       state: present
+       group_id: "sg-0087163dff83e07ac"
+
+

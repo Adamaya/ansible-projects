@@ -1,0 +1,45 @@
+- hosts: docker
+  tasks:
+   - yum_repository: 
+       name: docker_installation
+       description: docker repository
+       baseurl: https://download.docker.com/linux/centos/docker-ce.repo
+       gpgcheck: no
+       state: present 
+
+   - package:
+       name: docker-ce-3:18.09.1-3.el7
+       state: present
+
+   - package:
+       name: python3
+       state: present
+
+   - service:
+       name: docker
+       state: started
+
+   - command: pip3 install docker
+   
+   - file:
+       path: "/webpage"
+       state: directory
+
+   - copy:
+       src: "index.html"
+       dest: "/webpage"
+  
+   - docker_login:
+       username: adamayasharma
+       password: Password@114
+
+   - docker_container:
+       name: httpd_container
+       image: httpd
+       state: started
+       recreate: yes
+       ports:               
+         - "8091:80"
+       volumes:
+         - /webpage:/usr/local/apache2/htdocs
+

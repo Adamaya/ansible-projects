@@ -1,0 +1,8 @@
+- hosts: localhost
+  roles:
+    - ec2_configure
+
+- hosts: all
+  roles:
+    - httpd_configure
+
