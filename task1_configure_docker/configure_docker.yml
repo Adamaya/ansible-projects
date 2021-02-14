@@ -30,8 +30,8 @@
        dest: "/webpage"
   
    - docker_login:
-       username: adamayasharma
-       password: Password@114
+       username: 
+       password: 
 
    - docker_container:
        name: httpd_container
